@@ -1,0 +1,33 @@
+name: Exécuter le bot OnPadel
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Email de connexion"
+        required: true
+      password:
+        description: "Mot de passe"
+        required: true
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloner le dépôt
+        uses: actions/checkout@v3
+
+      - name: Installer Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Installer les dépendances
+        run: pip install requests
+
+      - name: Exécuter le script
+        env:
+          EMAIL: ${{ github.event.inputs.email }}
+          PASSWORD: ${{ github.event.inputs.password }}
+        run: python login.py
+
